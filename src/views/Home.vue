@@ -24,10 +24,13 @@ export default {
   methods: {
     addToMyData(item) {
       const newData = item.attributes.name;
-      const newPrice =item.attributes.price;
+      const newPrice = item.attributes.price;
       this.$store.commit('addToMyData', newData);
       this.$store.commit('addToMyPrice', newPrice);
-    }
+      localStorage.clear()
+      localStorage.setItem('myData', this.$store.state.myData)
+      localStorage.setItem('myPrice', this.$store.state.myPrice)
+    },
   },
   mounted() {
     axios.get('https://demo.spreecommerce.org/api/v2/storefront/products')

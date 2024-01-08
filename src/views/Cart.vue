@@ -15,6 +15,7 @@
 <script>
 
 export default {
+
   computed: {
     myData() {
       return this.$store.state.myData;
@@ -30,7 +31,7 @@ export default {
     removeItem(index) {
       this.myData.splice(index , 1)
     }
-  }
+  },
 }
 </script>
 
