@@ -1,9 +1,9 @@
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-3 p-8">
-     <div v-for="(selectedItem,index) in myData" :key="index"
+    <div class="grid grid-cols-2 md:grid-cols-5 sm:grid-cols-4 gap-3 p-8">
+     <div v-for="(item,index) in data" :key="index"
       class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
-        <div>{{ selectedItem }}</div>
-        <div class="mt-2 mb-2">{{ getPriceBySelectedItem(index) }} $</div>
+        <div>{{ data[index].name }}</div>
+        <div class="mt-2 mb-2">{{ data[index].display_price }}</div>
         <span class="cursor-pointer material-icons hover:text-red-600" @click="removeItem(index)">
           delete_outline
         </span>
@@ -15,23 +15,24 @@
 <script>
 
 export default {
-
-  computed: {
-    myData() {
-      return this.$store.state.myData;
-    },
-    myPrice() {
-      return this.$store.state.myPrice;
+  data() {
+    return {
+      data: []
     }
   },
   methods: {
-    getPriceBySelectedItem(index) {
-      return this.myPrice[index];
-    },
     removeItem(index) {
-      this.myData.splice(index , 1)
+      this.data.splice(index, 1)
+      localStorage.setItem('myItem', JSON.stringify(this.data))
+      alert("کالا با موفقیت از سبد خرید حذف شد.")
     }
   },
+  mounted() {
+    const storedArray = localStorage.getItem('myItem');
+    if (storedArray) {
+      this.data = JSON.parse(storedArray);
+    }
+  }
 }
 </script>
 

@@ -1,10 +1,10 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-3 p-8">
+  <div class="grid grid-cols-2 md:grid-cols-5 sm:grid-cols-4 gap-3 p-8">
      <div v-for="item in items" :key="item.id"
       class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
         <div>{{ item.attributes.name }}</div>
-        <div class="mt-2 mb-2">{{ item.attributes.price }} $</div>
-        <span class="cursor-pointer material-icons hover:text-green-600" @click="addToMyData(item)">
+        <div class="mt-2 mb-2">{{ item.attributes.display_price }}</div>
+        <span class="cursor-pointer material-icons hover:text-green-600" @click="add(item)">
           add
         </span>
      </div>
@@ -22,14 +22,19 @@ export default {
     };
   },
   methods: {
-    addToMyData(item) {
-      const newData = item.attributes.name;
-      const newPrice = item.attributes.price;
+    add(item) {
+      const newData = {
+        id: item.id,
+        name: item.attributes.name,
+        display_price: item.attributes.display_price
+      }
       this.$store.commit('addToMyData', newData);
-      this.$store.commit('addToMyPrice', newPrice);
-      localStorage.clear()
-      localStorage.setItem('myData', this.$store.state.myData)
-      localStorage.setItem('myPrice', this.$store.state.myPrice)
+
+      const previousData = JSON.parse(localStorage.getItem('myItem')) || [];
+
+      const combinedData = [...previousData, newData];
+      localStorage.setItem('myItem', JSON.stringify(combinedData))
+      alert("کالا با موفقیت به سبد خرید اضافه شد.")
     },
   },
   mounted() {
