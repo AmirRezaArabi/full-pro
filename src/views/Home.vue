@@ -4,9 +4,15 @@
       class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
       <div>{{ item.attributes.name }}</div>
       <div class="mt-2 mb-2">{{ item.attributes.display_price }}</div>
-      <span class="cursor-pointer material-icons hover:text-green-600" @click="add(item)">
-        add
-      </span>
+      <div>
+        <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="remove(item)">
+          remove
+        </span>
+        <div class="inline-block px-1">{{ item.count }}</div>
+        <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="add(item)">
+          add
+        </span>
+      </div>
     </div>
   </div>
   <notifications classes="vue-notification" position="bottom right" />
@@ -20,7 +26,9 @@ export default {
   computed: {
     ...mapState(['data']),
     items() {
-      return this.data;
+      return this.data.map(item => ({
+        ...item
+      }));
     },
   },
   methods: {
@@ -31,14 +39,16 @@ export default {
         name: item.attributes.name,
         display_price: item.attributes.display_price,
       };
-      this.$store.commit('addToCartData', newData);
 
-      const previousData = JSON.parse(localStorage.getItem('myItem')) || [];
-
-      const combinedData = [...previousData, newData];
-      localStorage.setItem('myItem', JSON.stringify(combinedData))
+      this.$store.dispatch('addToCart', newData);
       notify({
         text: "کالا با موفقیت به سبد خرید اضافه شد",
+      });
+    },
+    remove(item) {
+      this.$store.dispatch('removeFromCart', item.id);
+      notify({
+        text: "کالا با موفقیت از سبد خرید حذف شد",
       });
     },
     loadData() {
@@ -52,6 +62,7 @@ export default {
   },
 };
 </script>
+
 
 <style>
 

@@ -9,3 +9,11 @@ export function fetchData({ commit }) {
         console.error(error);
       });
   }
+  export function removeFromCart({ commit, state }, itemId) {
+    commit('removeFromCartData', itemId);
+    localStorage.setItem('myItem', JSON.stringify(state.cartData));
+  }
+  export function addToCart({ commit, state }, newData) {
+    commit('addToCartData', newData);
+    localStorage.setItem('myItem', JSON.stringify(state.cartData));
+  }
