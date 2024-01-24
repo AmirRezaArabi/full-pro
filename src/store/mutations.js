@@ -2,6 +2,7 @@
 export function setData(state, data) {
   state.data = data;
 }
+
 export function addToCartData(state, newData) {
   const existingItem = state.cartData.find((item) => item.id === newData.id);
 
@@ -11,6 +12,7 @@ export function addToCartData(state, newData) {
     state.cartData.push({ ...newData, count: 1 });
   }
 }
+
 export function removeFromCartData(state, itemId) {
   const index = state.cartData.findIndex((item) => item.id === itemId);
 
@@ -25,7 +27,4 @@ export function removeFromCartData(state, itemId) {
     }
   }
 }
-export function updateCartItem(state, payload) {
 
-  state.cartUpdate = vue.observable({});
-}

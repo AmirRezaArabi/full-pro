@@ -4,9 +4,9 @@
       <div>{{ item.name }}</div>
       <div class="mt-2 mb-2">{{ item.display_price }}</div>
       <div class="inline-block px-1 mb-1">
-        <span class="cursor-pointer material-icons" @click="decreaseCount(index)">remove</span>
+        <span class="cursor-pointer material-icons hover:text-red-600" @click="decreaseCount(index)">remove</span>
         {{ item.count }}
-        <span class="cursor-pointer material-icons" @click="increaseCount(index)">add</span>
+        <span class="cursor-pointer material-icons hover:text-green-600" @click="increaseCount(index)">add</span>
       </div>
       <span class="cursor-pointer material-icons hover:text-red-600" @click="removeItem(index)">
         delete_outline
@@ -27,25 +27,32 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['updateCartItem']),
+    ...mapMutations('cart', ['removeFromCartData', 'addToCartData']),
     removeItem(index) {
       this.data.splice(index, 1);
       this.updateLocalStorage();
       notify({
         text: "کالا با موفقیت از سبد خرید حذف شد",
+        type: "error"
       });
     },
     decreaseCount(index) {
       if (this.data[index].count > 0) {
         this.data[index].count--;
-        this.updateCartItem(this.data[index]);
-        localStorage.setItem('myItem', JSON.stringify(this.data));
+        this.updateLocalStorage();
+        notify({
+          text: "کالا با موفقیت از سبد خرید حذف شد",
+          type: "error"
+        });
       }
     },
     increaseCount(index) {
       this.data[index].count++;
-      this.updateCartItem(this.data[index]);
-      localStorage.setItem('myItem', JSON.stringify(this.data));
+      this.updateLocalStorage();
+      notify({
+        text: "کالا با موفقیت به سبد خرید اضافه شد",
+        type: "success"
+      });
     },
     updateLocalStorage() {
       localStorage.setItem('myItem', JSON.stringify(this.data));
@@ -54,20 +61,14 @@ export default {
   mounted() {
     const storedArray = localStorage.getItem('myItem');
     if (storedArray) {
-      const uniqueItems = Array.from(new Set(JSON.parse(storedArray).map(item => item.id)))
-        .map(id => {
-          const itemsWithSameId = JSON.parse(storedArray).filter(item => item.id === id);
-          const totalCount = itemsWithSameId.reduce((total, item) => total + item.count, 0);
-          return { ...itemsWithSameId[0], count: totalCount };
-        }); 
-      this.data = uniqueItems;
+      this.data = JSON.parse(storedArray);
     }
-  },
+  }
 };
 </script>
 
 <style>
-.vue-notification {
+.vue-notification.success {
   text-align: end;
   margin: 0 5px 5px;
   padding: 10px;
@@ -76,5 +77,16 @@ export default {
   background: #68cd86;
   border-left: 5px solid #68cd86;
   border-right: 5px solid #42a85f;
+}
+
+.vue-notification.error {
+  text-align: end;
+  margin: 0 5px 5px;
+  padding: 10px;
+  font-size: 12px;
+  color: #ffffff;
+  background: #ff6961;
+  border-left: 5px solid #ff6961;
+  border-right: 5px solid #ff0000;
 }
 </style>

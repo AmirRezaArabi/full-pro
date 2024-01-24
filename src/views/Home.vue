@@ -32,7 +32,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchData']),
+    ...mapActions(['fetchData', 'addToCart']),
     add(item) {
       const newData = {
         id: item.id,
@@ -40,15 +40,17 @@ export default {
         display_price: item.attributes.display_price,
       };
 
-      this.$store.dispatch('addToCart', newData);
+      this.addToCart(newData);
       notify({
         text: "کالا با موفقیت به سبد خرید اضافه شد",
+        type: "success"
       });
     },
     remove(item) {
       this.$store.dispatch('removeFromCart', item.id);
       notify({
         text: "کالا با موفقیت از سبد خرید حذف شد",
+        type: "error"
       });
     },
     loadData() {
@@ -66,7 +68,7 @@ export default {
 
 <style>
 
-.vue-notification {
+.vue-notification.success {
   text-align: end;
   margin: 0 5px 5px;
   padding: 10px;
@@ -75,6 +77,16 @@ export default {
   background: #68cd86;
   border-left: 5px solid #68cd86;
   border-right: 5px solid #42a85f;
+}
+.vue-notification.error {
+  text-align: end;
+  margin: 0 5px 5px;
+  padding: 10px;
+  font-size: 12px;
+  color: #ffffff;
+  background: #ff6961;
+  border-left: 5px solid #ff6961;
+  border-right: 5px solid #ff0000;
 }
 
 </style>

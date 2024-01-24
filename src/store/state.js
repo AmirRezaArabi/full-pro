@@ -1,4 +1,4 @@
 export default {
   cartData: [],
-  data: []
+  data: [],
 };
