@@ -8,9 +8,6 @@
         {{ item.count }}
         <span class="cursor-pointer material-icons hover:text-green-600" @click="increaseCount(index)">add</span>
       </div>
-      <span class="cursor-pointer material-icons hover:text-red-600" @click="removeItem(index)">
-        delete_outline
-      </span>
     </div>
   </div>
   <notifications position="bottom right" />
@@ -20,6 +17,7 @@
 import { notify } from "@kyvg/vue3-notification";
 import { mapMutations } from 'vuex';
 
+
 export default {
   data() {
     return {
@@ -28,22 +26,18 @@ export default {
   },
   methods: {
     ...mapMutations('cart', ['removeFromCartData', 'addToCartData']),
-    removeItem(index) {
-      this.data.splice(index, 1);
-      this.updateLocalStorage();
-      notify({
-        text: "کالا با موفقیت از سبد خرید حذف شد",
-        type: "error"
-      });
-    },
     decreaseCount(index) {
-      if (this.data[index].count > 0) {
+      if (this.data[index].count > 1) {
         this.data[index].count--;
         this.updateLocalStorage();
         notify({
           text: "کالا با موفقیت از سبد خرید حذف شد",
           type: "error"
         });
+      }
+      else if (this.data[index].count > 0) {
+        this.data.splice(index, 1);
+        this.updateLocalStorage()
       }
     },
     increaseCount(index) {

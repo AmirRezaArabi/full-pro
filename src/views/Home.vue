@@ -4,11 +4,15 @@
       class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
       <div>{{ item.attributes.name }}</div>
       <div class="mt-2 mb-2">{{ item.attributes.display_price }}</div>
-      <div>
-        <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="remove(item)">
+      <div v-if="isInCart(item)">
+        <span class="cursor-pointer material-icons inline-block px-1 hover:text-red-600" @click="remove(item)">
           remove
         </span>
-        <div class="inline-block px-1">{{ item.count }}</div>
+        <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="add(item)">
+          add
+        </span>
+      </div>
+      <div v-else>
         <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="add(item)">
           add
         </span>
@@ -24,7 +28,7 @@ import { notify } from "@kyvg/vue3-notification";
 
 export default {
   computed: {
-    ...mapState(['data']),
+    ...mapState(['data', 'cartData']),
     items() {
       return this.data.map(item => ({
         ...item
@@ -32,7 +36,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchData', 'addToCart']),
+    ...mapActions(['fetchData', 'addToCart', 'removeFromCart']),
     add(item) {
       const newData = {
         id: item.id,
@@ -47,14 +51,17 @@ export default {
       });
     },
     remove(item) {
-      this.$store.dispatch('removeFromCart', item.id);
+      this.removeFromCart(item.id);
       notify({
         text: "کالا با موفقیت از سبد خرید حذف شد",
         type: "error"
       });
     },
     loadData() {
-      this.fetchData()
+      this.fetchData();
+    },
+    isInCart(item) {
+      return this.cartData.some(cartItem => cartItem.id === item.id);
     },
   },
   beforeRouteEnter(to, from, next) {
@@ -65,9 +72,7 @@ export default {
 };
 </script>
 
-
 <style>
-
 .vue-notification.success {
   text-align: end;
   margin: 0 5px 5px;
@@ -78,6 +83,7 @@ export default {
   border-left: 5px solid #68cd86;
   border-right: 5px solid #42a85f;
 }
+
 .vue-notification.error {
   text-align: end;
   margin: 0 5px 5px;
@@ -88,5 +94,4 @@ export default {
   border-left: 5px solid #ff6961;
   border-right: 5px solid #ff0000;
 }
-
 </style>

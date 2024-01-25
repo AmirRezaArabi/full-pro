@@ -27,4 +27,6 @@ export function removeFromCartData(state, itemId) {
     }
   }
 }
-
+export function updateLocalStorage(state) {
+  localStorage.setItem('myItem', JSON.stringify(state.cartData));
+}

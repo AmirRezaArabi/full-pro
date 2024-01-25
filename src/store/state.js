@@ -1,4 +1,4 @@
 export default {
-  cartData: [],
+  cartData: JSON.parse(localStorage.getItem('myItem')) || [],
   data: [],
 };
