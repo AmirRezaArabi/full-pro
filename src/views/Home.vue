@@ -8,6 +8,9 @@
         <span class="cursor-pointer material-icons inline-block px-1 hover:text-red-600" @click="remove(item)">
           remove
         </span>
+        <span v-if="cartData.find(cartItem => cartItem.id === item.id)">
+          {{ cartData.find(cartItem => cartItem.id === item.id).count }}
+        </span>
         <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="add(item)">
           add
         </span>
