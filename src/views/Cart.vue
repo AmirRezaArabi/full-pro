@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-2 md:grid-cols-5 sm:grid-cols-4 gap-3 p-8">
-    <div v-for="(item, index) in data" :key="index" class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
+    <div v-for="(item, index) in cartData" :key="index" class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
       <div>{{ item.name }}</div>
       <div class="mt-2 mb-2">{{ item.display_price }}</div>
       <div class="inline-block px-1 mb-1">
@@ -15,49 +15,38 @@
 
 <script>
 import { notify } from "@kyvg/vue3-notification";
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 
 export default {
-  data() {
-    return {
-      data: [],
-    };
+  computed: {
+    ...mapState(["cartData"])
   },
   methods: {
-    ...mapMutations('cart', ['removeFromCartData', 'addToCartData']),
+    ...mapMutations(["removeFromCartData", "incrementItemCount", "decrementItemCount" , "updateLocalStorage"]),
     decreaseCount(index) {
-      if (this.data[index].count > 1) {
-        this.data[index].count--;
-        this.updateLocalStorage();
+      if (this.cartData[index].count > 1) {
+        this.$store.commit('decrementItemCount', {index});
+        this.$store.commit('updateLocalStorage');
         notify({
           text: "کالا با موفقیت از سبد خرید حذف شد",
           type: "error"
         });
       }
-      else if (this.data[index].count > 0) {
-        this.data.splice(index, 1);
-        this.updateLocalStorage()
+      else if (this.cartData[index].count == 1) {
+        this.$store.commit('removeFromCartData', {index});
+        this.$store.commit('updateLocalStorage');
       }
     },
     increaseCount(index) {
-      this.data[index].count++;
-      this.updateLocalStorage();
+      this.$store.commit('incrementItemCount', {index});
+      this.$store.commit('updateLocalStorage');
       notify({
         text: "کالا با موفقیت به سبد خرید اضافه شد",
         type: "success"
       });
-    },
-    updateLocalStorage() {
-      localStorage.setItem('myItem', JSON.stringify(this.data));
-    },
-  },
-  mounted() {
-    const storedArray = localStorage.getItem('myItem');
-    if (storedArray) {
-      this.data = JSON.parse(storedArray);
     }
-  }
+  },
 };
 </script>
 
