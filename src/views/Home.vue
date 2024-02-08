@@ -1,42 +1,32 @@
 <template>
   <div class="grid grid-cols-2 md:grid-cols-5 sm:grid-cols-4 gap-3 p-8">
-    <div v-for="item in items" :key="item.id"
-      class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
-      <div>{{ item.attributes.name }}</div>
-      <div class="mt-2 mb-2">{{ item.attributes.display_price }}</div>
-      <div v-if="isInCart(item)">
-        <span class="cursor-pointer material-icons inline-block px-1 hover:text-red-600" @click="remove(item)">
-          remove
-        </span>
-        <span v-if="cartData.find(cartItem => cartItem.id === item.id)">
-          {{ cartData.find(cartItem => cartItem.id === item.id).count }}
-        </span>
-        <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="add(item)">
-          add
-        </span>
-      </div>
-      <div v-else>
-        <span class="cursor-pointer material-icons inline-block px-1 hover:text-green-600" @click="add(item)">
-          add
-        </span>
-      </div>
-    </div>
+    <product-item
+      v-for="item in items"
+      :key="item.id"
+      :item="item"
+      :cartItem="getCartItem(item)"
+      @add="add"
+      @remove="remove"
+    />
   </div>
-  <notifications classes="vue-notification" position="bottom right" />
+  <notifications position="bottom right" />
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import ProductItem from '../components/ProductItem.vue';
 import { notify } from "@kyvg/vue3-notification";
+import { mapActions, mapState } from 'vuex';
 
 export default {
+  components: {
+    ProductItem,
+    Notification
+  },
   computed: {
     ...mapState(['data', 'cartData']),
     items() {
-      return this.data.map(item => ({
-        ...item
-      }));
-    },
+      return this.data.map(item => ({ ...item }));
+    }
   },
   methods: {
     ...mapActions(['fetchData', 'addToCart', 'removeFromCart']),
@@ -46,7 +36,6 @@ export default {
         name: item.attributes.name,
         display_price: item.attributes.display_price,
       };
-
       this.addToCart(newData);
       notify({
         text: "کالا با موفقیت به سبد خرید اضافه شد",
@@ -56,15 +45,15 @@ export default {
     remove(item) {
       this.removeFromCart(item.id);
       notify({
-        text: "کالا با موفقیت از سبد خرید حذف شد",
-        type: "error"
-      });
+          text: "کالا با موفقیت از سبد خرید حذف شد",
+          type: "error"
+        });
     },
     loadData() {
       this.fetchData();
     },
-    isInCart(item) {
-      return this.cartData.some(cartItem => cartItem.id === item.id);
+    getCartItem(item) {
+      return this.cartData.find(cartItem => cartItem.id === item.id);
     },
   },
   beforeRouteEnter(to, from, next) {
@@ -76,6 +65,7 @@ export default {
 </script>
 
 <style>
+
 .vue-notification.success {
   text-align: end;
   margin: 0 5px 5px;
@@ -97,4 +87,5 @@ export default {
   border-left: 5px solid #ff6961;
   border-right: 5px solid #ff0000;
 }
+
 </style>

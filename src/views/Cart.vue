@@ -23,11 +23,10 @@ export default {
     ...mapState(["cartData"])
   },
   methods: {
-    ...mapMutations(["removeFromCartData", "incrementItemCount", "decrementItemCount" , "updateLocalStorage"]),
+    ...mapMutations(["removeFromCartData", "incrementItemCount", "decrementItemCount"]),
     decreaseCount(index) {
       if (this.cartData[index].count > 1) {
         this.$store.commit('decrementItemCount', {index});
-        this.$store.commit('updateLocalStorage');
         notify({
           text: "کالا با موفقیت از سبد خرید حذف شد",
           type: "error"
@@ -35,12 +34,10 @@ export default {
       }
       else if (this.cartData[index].count == 1) {
         this.$store.commit('removeFromCartData', {index});
-        this.$store.commit('updateLocalStorage');
       }
     },
     increaseCount(index) {
       this.$store.commit('incrementItemCount', {index});
-      this.$store.commit('updateLocalStorage');
       notify({
         text: "کالا با موفقیت به سبد خرید اضافه شد",
         type: "success"
@@ -49,27 +46,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.vue-notification.success {
-  text-align: end;
-  margin: 0 5px 5px;
-  padding: 10px;
-  font-size: 12px;
-  color: #ffffff;
-  background: #68cd86;
-  border-left: 5px solid #68cd86;
-  border-right: 5px solid #42a85f;
-}
-
-.vue-notification.error {
-  text-align: end;
-  margin: 0 5px 5px;
-  padding: 10px;
-  font-size: 12px;
-  color: #ffffff;
-  background: #ff6961;
-  border-left: 5px solid #ff6961;
-  border-right: 5px solid #ff0000;
-}
-</style>

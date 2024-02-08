@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { updateLocalStorage } from './mutations';
 
 const apiInstance = axios.create({
   baseURL: 'https://demo.spreecommerce.org/api/v2/storefront',
@@ -27,7 +26,6 @@ export function removeFromCart({ commit, state }, itemId) {
         }
       }
     }
-    updateLocalStorage(state);
 }
 export function addToCart({ commit, state }, newData) {
   const existingItemIndex = state.cartData.findIndex((item) => item.id === newData.id);
@@ -37,5 +35,4 @@ export function addToCart({ commit, state }, newData) {
   } else {
     commit('addToCartData', { ...newData, count: 1})
   }
-    updateLocalStorage(state);
 }
