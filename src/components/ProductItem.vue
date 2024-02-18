@@ -19,20 +19,42 @@
       </span>
     </div>
   </div>
+  <notifications position="bottom right" />
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+import { notify } from "@kyvg/vue3-notification";
+
 export default {
   props: {
-    item: Object,
-    cartItem: Object
+    item: Object
+  },
+  computed: {
+    cartItem() {
+      return this.$store.state.cartData.find(cartItem => cartItem.id === this.item.id);
+    }
   },
   methods: {
-    add() {
-      this.$emit('add', this.item);
+    ...mapActions(['addToCart', 'removeFromCart']),
+    add(item) {
+      const newData = {
+        id: item.id,
+        name: item.attributes.name,
+        display_price: item.attributes.display_price,
+      };
+      this.addToCart(newData);
+      notify({
+        text: "کالا با موفقیت به سبد خرید اضافه شد",
+        type: "success"
+      });
     },
-    remove() {
-      this.$emit('remove', this.item);
+    remove(item) {
+      this.removeFromCart(item.id);
+      notify({
+          text: "کالا با موفقیت از سبد خرید حذف شد",
+          type: "error"
+        });
     },
     isInCart(item) {
       return !!this.cartItem;

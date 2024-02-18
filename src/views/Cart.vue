@@ -15,7 +15,7 @@
 
 <script>
 import { notify } from "@kyvg/vue3-notification";
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState, mapActions } from 'vuex';
 
 
 export default {
@@ -23,21 +23,23 @@ export default {
     ...mapState(["cartData"])
   },
   methods: {
+    ...mapActions(['removeFromCart']),
     ...mapMutations(["removeFromCartData", "incrementItemCount", "decrementItemCount"]),
     decreaseCount(index) {
+      const itemId = this.cartData[index].id;
       if (this.cartData[index].count > 1) {
-        this.$store.commit('decrementItemCount', {index});
+        this.$store.commit('decrementItemCount', { itemId: itemId });
         notify({
           text: "کالا با موفقیت از سبد خرید حذف شد",
           type: "error"
         });
-      }
-      else if (this.cartData[index].count == 1) {
-        this.$store.commit('removeFromCartData', {index});
+      } else if (this.cartData[index].count === 1) {
+        this.removeFromCart(itemId);
       }
     },
     increaseCount(index) {
-      this.$store.commit('incrementItemCount', {index});
+      const itemId = this.cartData[index].id;
+      this.$store.commit('incrementItemCount', { itemId: itemId });
       notify({
         text: "کالا با موفقیت به سبد خرید اضافه شد",
         type: "success"

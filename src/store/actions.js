@@ -14,25 +14,21 @@ export function fetchData({ commit }) {
     });
 }
 export function removeFromCart({ commit, state }, itemId) {
-    const index = state.cartData.findIndex((item) => item.id === itemId);
-
-    if (index !== -1) {
-      const item = state.cartData[index];
-      if (item.count > 0) {
-        commit('decrementItemCount', {index: index})
-
-        if (item.count === 0) {
-          commit('removeFromCartData', index)
-        }
-      }
-    }
+  
+  const index = state.cartData.findIndex(item => item.id === itemId);
+  if (state.cartData[index].count > 1) {
+    commit('decrementItemCount', { itemId: itemId });  
+  } else if (state.cartData[index].count === 1) {
+    commit('removeFromCart', { itemId: itemId });  
+  }
 }
-export function addToCart({ commit, state }, newData) {
-  const existingItemIndex = state.cartData.findIndex((item) => item.id === newData.id);
 
-  if (existingItemIndex !== -1) {
-    commit('incrementItemCount', {index: existingItemIndex})
+export function addToCart({ commit, state }, newData) {
+  const existingItem = state.cartData.find(item => item.id === newData.id);
+
+  if (existingItem) {
+    commit('incrementItemCount', { itemId: newData.id });
   } else {
-    commit('addToCartData', { ...newData, count: 1})
+    commit('addToCartData', { ...newData, count: 1 });
   }
 }

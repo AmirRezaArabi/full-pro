@@ -1,60 +1,32 @@
 <template>
   <div class="grid grid-cols-2 md:grid-cols-5 sm:grid-cols-4 gap-3 p-8">
-    <product-item
+    <ProductItem
       v-for="item in items"
       :key="item.id"
       :item="item"
-      :cartItem="getCartItem(item)"
-      @add="add"
-      @remove="remove"
     />
   </div>
-  <notifications position="bottom right" />
 </template>
 
 <script>
 import ProductItem from '../components/ProductItem.vue';
-import { notify } from "@kyvg/vue3-notification";
 import { mapActions, mapState } from 'vuex';
 
 export default {
   components: {
-    ProductItem,
-    Notification
-  },
+    ProductItem
+   },
   computed: {
-    ...mapState(['data', 'cartData']),
+    ...mapState(['data']),
     items() {
       return this.data.map(item => ({ ...item }));
     }
   },
   methods: {
-    ...mapActions(['fetchData', 'addToCart', 'removeFromCart']),
-    add(item) {
-      const newData = {
-        id: item.id,
-        name: item.attributes.name,
-        display_price: item.attributes.display_price,
-      };
-      this.addToCart(newData);
-      notify({
-        text: "کالا با موفقیت به سبد خرید اضافه شد",
-        type: "success"
-      });
-    },
-    remove(item) {
-      this.removeFromCart(item.id);
-      notify({
-          text: "کالا با موفقیت از سبد خرید حذف شد",
-          type: "error"
-        });
-    },
+    ...mapActions(['fetchData']),
     loadData() {
       this.fetchData();
-    },
-    getCartItem(item) {
-      return this.cartData.find(cartItem => cartItem.id === item.id);
-    },
+    }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

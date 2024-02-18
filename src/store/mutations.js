@@ -1,4 +1,3 @@
-
 export function setData(state, data) {
   state.data = data;
 }
@@ -8,21 +7,28 @@ export function addToCartData(state, newData) {
   updateLocalStorage(state)
 }
 
-export function removeFromCartData(state, index) {
+export function removeFromCart(state, {itemId}) {
+  const index = state.cartData.findIndex(item => item.id === itemId);
   state.cartData.splice(index, 1);
   updateLocalStorage(state)
 }
 
-export function incrementItemCount(state, {index}) {
+export function incrementItemCount(state, {itemId}) {
+  const index = state.cartData.findIndex(item => item.id === itemId);
   state.cartData[index].count++;
-  updateLocalStorage(state)
+  updateLocalStorage(state);
 }
 
-export function decrementItemCount(state, {index}) {
+export function decrementItemCount(state, {itemId}) {
+  const index = state.cartData.findIndex(item => item.id === itemId);
   state.cartData[index].count--;
-  updateLocalStorage(state)
+  updateLocalStorage(state);
 }
+
 
 export function updateLocalStorage(state) {
   localStorage.setItem('myItem', JSON.stringify(state.cartData));
 }
+
+
+
