@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import { notify } from "@kyvg/vue3-notification";
 
 export default {

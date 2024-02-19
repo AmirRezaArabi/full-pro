@@ -1,32 +1,54 @@
 <template>
-  <div class="grid grid-cols-2 md:grid-cols-5 sm:grid-cols-4 gap-3 p-8">
-    <ProductItem
-      v-for="item in items"
-      :key="item.id"
-      :item="item"
+  <div>
+    <div class="grid grid-cols-2 md:grid-cols-4 sm:grid-cols-4 gap-3 p-8">
+      <ProductItem
+        v-for="item in paginatedItems"
+        :key="item.id"
+        :item="item"
+      />
+    </div>
+    <Pagination
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      @update:currentPage="currentPage = $event"
     />
   </div>
 </template>
 
 <script>
 import ProductItem from '../components/ProductItem.vue';
+import Pagination from '../components/Pagination.vue';
 import { mapActions, mapState } from 'vuex';
 
 export default {
   components: {
-    ProductItem
+    ProductItem,
+    Pagination
    },
   computed: {
     ...mapState(['data']),
-    items() {
-      return this.data.map(item => ({ ...item }));
-    }
+    itemsPerPage() {
+      return 8;
+    },
+    totalPages() {
+      return Math.ceil(this.data.length / this.itemsPerPage);
+    },
+    paginatedItems() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.data.slice(startIndex, endIndex);
+    },
+  },
+  data() {
+    return {
+      currentPage: 1
+    };
   },
   methods: {
     ...mapActions(['fetchData']),
     loadData() {
       this.fetchData();
-    }
+    },
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

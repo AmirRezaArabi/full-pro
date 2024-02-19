@@ -6,7 +6,7 @@
     <router-link :to="{name: 'cart'}" class="relative inline-flex items-center text-6xl text-blue-300 px-5 h-full transition-colors hover:bg-blue-100">
       <span class="material-icons">shopping_cart</span>
       <div v-if="totalItemCount!==0">
-        <span class="absolute flex justify-center left-3 bottom-3 rounded-md text-sm bg-red-500 text-white h-5 w-5">{{ totalItemCount }}</span>
+        <span class="absolute flex justify-center items-center left-3 bottom-3 rounded-md text-xs bg-red-500 text-white h-5 w-5">{{ totalItemCount }}</span>
       </div>
     </router-link>
   </header>
@@ -25,7 +25,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
