@@ -1,32 +1,27 @@
 <template>
   <div>
+    <Filter />
     <div class="grid grid-cols-2 md:grid-cols-4 sm:grid-cols-4 gap-3 p-8">
-      <ProductItem
-        v-for="item in paginatedItems"
-        :key="item.id"
-        :item="item"
-      />
+      <ProductItem v-for="item in paginatedItems" :key="item.id" :item="item" />
     </div>
-    <Pagination
-      :currentPage="currentPage"
-      :totalPages="totalPages"
-      @update:currentPage="currentPage = $event"
-    />
+    <Pagination :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="currentPage = $event" />
   </div>
 </template>
 
 <script>
 import ProductItem from '../components/ProductItem.vue';
 import Pagination from '../components/Pagination.vue';
+import Filter from '../components/Filter.vue';
 import { mapActions, mapState } from 'vuex';
 
 export default {
   components: {
     ProductItem,
-    Pagination
-   },
+    Pagination,
+    Filter
+  },
   computed: {
-    ...mapState(['data']),
+    ...mapState(['data', 'meta']),
     itemsPerPage() {
       return 8;
     },
@@ -59,7 +54,6 @@ export default {
 </script>
 
 <style>
-
 .vue-notification.success {
   text-align: end;
   margin: 0 5px 5px;
@@ -81,5 +75,4 @@ export default {
   border-left: 5px solid #ff6961;
   border-right: 5px solid #ff0000;
 }
-
 </style>

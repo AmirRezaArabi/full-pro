@@ -8,6 +8,7 @@ export function fetchData({ commit }) {
   apiInstance.get('/products')
     .then(response => {
       commit('setData', response.data.data);
+      commit('setMeta', response.data.meta.filters.option_types);
     })
     .catch(error => {
       console.error(error);

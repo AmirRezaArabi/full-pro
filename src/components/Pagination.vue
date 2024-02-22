@@ -1,10 +1,14 @@
 <template>
-  <div class="flex justify-center mt-4">
-    <button @click="previousPage" :disabled="currentPage === 1" class="flex justify-center items-center mx-1 p-4 rounded-md text-xs bg-red-500 text-white h-5 hover:bg-red-600">Previous</button>
+  <div class="flex justify-center mt-28 mb-4">
+    <button @click="previousPage" :disabled="currentPage === 1"
+      class="flex justify-center items-center mx-1 p-4 rounded-md text-xs bg-red-500 text-white h-5 hover:bg-red-600">Previous</button>
     <template v-for="pageNumber in getPageNumbers">
-      <button @click="goToPage(pageNumber)" :class="{ 'font-bold bg-red-700': pageNumber === currentPage }" class="flex justify-center items-center mx-1 p-4 rounded-md text-xs bg-red-500 text-white h-5 w-5 hover:bg-red-700">{{ pageNumber }}</button>
+      <button @click="goToPage(pageNumber)" :class="{ 'font-bold bg-red-700': pageNumber === currentPage }"
+        class="flex justify-center items-center mx-1 p-4 rounded-md text-xs bg-red-500 text-white h-5 w-5 hover:bg-red-700">{{
+          pageNumber }}</button>
     </template>
-    <button @click="nextPage" :disabled="currentPage === totalPages" class="flex justify-center items-center mx-1 p-4 rounded-md text-xs bg-red-500 text-white h-5 hover:bg-red-600">Next</button>
+    <button @click="nextPage" :disabled="currentPage === totalPages"
+      class="flex justify-center items-center mx-1 p-4 rounded-md text-xs bg-red-500 text-white h-5 hover:bg-red-600">Next</button>
   </div>
 </template>
 

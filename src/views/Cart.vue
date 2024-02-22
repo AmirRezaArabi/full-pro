@@ -1,6 +1,7 @@
 <template>
   <div class="grid grid-cols-2 md:grid-cols-4 sm:grid-cols-4 gap-3 p-8">
-    <div v-for="(item, index) in cartData" :key="index" class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
+    <div v-for="(item, index) in cartData" :key="index"
+      class="grid text-center font-bold justify-items-center bg-slate-300 rounded-md p-4">
       <div>{{ item.name }}</div>
       <div class="mt-2 mb-2">{{ item.display_price }}</div>
       <div class="inline-block px-1 mb-1">
