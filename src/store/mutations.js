@@ -4,6 +4,9 @@ export function setData(state, data) {
 export function setMeta(state, meta) {
   state.meta = meta;
 }
+export function setFilterData(state, filterData) {
+  state.filterData = filterData;
+}
 
 export function addToCartData(state, newData) {
   state.cartData.push(newData);

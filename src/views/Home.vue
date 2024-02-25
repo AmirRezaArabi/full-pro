@@ -21,7 +21,7 @@ export default {
     Filter
   },
   computed: {
-    ...mapState(['data', 'meta']),
+    ...mapState(['data', 'meta', 'filterData']),
     itemsPerPage() {
       return 8;
     },
@@ -32,24 +32,24 @@ export default {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.data.slice(startIndex, endIndex);
-    },
+    }
   },
   data() {
     return {
-      currentPage: 1
+      currentPage: 1,
     };
   },
   methods: {
     ...mapActions(['fetchData']),
     loadData() {
       this.fetchData();
-    },
+    }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.loadData();
     });
-  },
+  }
 };
 </script>
 

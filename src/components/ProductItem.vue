@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
@@ -31,6 +31,7 @@ export default {
     item: Object
   },
   computed: {
+    ...mapState(['filterData']),
     cartItem() {
       return this.$store.state.cartData.find(cartItem => cartItem.id === this.item.id);
     }

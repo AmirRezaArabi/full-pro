@@ -4,8 +4,8 @@ const apiInstance = axios.create({
   baseURL: 'https://demo.spreecommerce.org/api/v2/storefront',
 });
 
-export function fetchData({ commit }) {
-  apiInstance.get('/products')
+export function fetchData({ commit }, filterData) {
+  apiInstance.get('/products?' + filterData)
     .then(response => {
       commit('setData', response.data.data);
       commit('setMeta', response.data.meta.filters.option_types);
