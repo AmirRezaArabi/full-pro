@@ -1,12 +1,8 @@
 export function setData(state, data) {
   state.data = data;
 }
-export function setMeta(state, meta) {
-  state.meta = meta;
-}
-export function setFilterData(state, filterData) {
-  state.filterData = filterData;
-}
+
+
 
 export function addToCartData(state, newData) {
   state.cartData.push(newData);
@@ -31,6 +27,11 @@ export function decrementItemCount(state, {itemId}) {
   updateLocalStorage(state);
 }
 
+
+
+export function goToPage(state , page) {
+  state.currentPage = page
+}
 
 export function updateLocalStorage(state) {
   localStorage.setItem('myItem', JSON.stringify(state.cartData));

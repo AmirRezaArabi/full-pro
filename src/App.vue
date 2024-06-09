@@ -1,8 +1,13 @@
 <template>
-  <Navbar />
-  <router-view />
+  <Nav />
+  <div style="min-height: 26vh">
+    <router-view />
+  </div>
 </template>
 
 <script setup>
-import Navbar from './components/Navbar.vue'
+import Nav from "./components/Nav.vue"
+import { useRoute } from "vue-router"
+
+const route = useRoute()
 </script>
